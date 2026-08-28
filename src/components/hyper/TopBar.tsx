@@ -1,9 +1,40 @@
-import { Bell, Search, Zap } from "lucide-react";
+import { Bell, Search, Zap, ArrowLeft } from "lucide-react";
+import { useRouterState, useRouter } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { ProfileMenu } from "./ProfileMenu";
 
+const pageTitles: Record<string, string> = {
+  "/settings": "Settings",
+  "/pricing": "Pricing",
+  "/terms": "Terms of Service",
+  "/privacy": "Privacy Policy",
+};
 
 export function TopBar() {
+  const router = useRouter();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const title = pageTitles[pathname.replace(/\/$/, "") || "/"];
+
+  if (title) {
+    return (
+      <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-background/70 px-4 py-3 backdrop-blur-xl lg:px-8">
+        <button
+          type="button"
+          onClick={() => {
+            if (typeof window !== "undefined" && window.history.length > 1) router.history.back();
+            else router.navigate({ to: "/" });
+          }}
+          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-[13px] font-semibold text-foreground transition-colors hover:bg-muted"
+        >
+          <ArrowLeft className="h-4 w-4" strokeWidth={2} />
+          Back
+        </button>
+
+        <h1 className="ml-auto truncate text-[15px] font-bold tracking-[-0.02em]">{title}</h1>
+      </header>
+    );
+  }
+
   return (
     <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-background/70 px-4 py-3 backdrop-blur-xl lg:px-8">
       <div className="lg:hidden">
@@ -34,7 +65,6 @@ export function TopBar() {
         </button>
         <ProfileMenu />
       </div>
-
     </header>
   );
 }
