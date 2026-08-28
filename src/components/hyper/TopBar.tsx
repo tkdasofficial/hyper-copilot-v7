@@ -1,5 +1,6 @@
 import { Bell, Search, Zap } from "lucide-react";
 import { Logo } from "./Logo";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function TopBar() {
   return (
@@ -18,6 +19,7 @@ export function TopBar() {
       </div>
 
       <div className="ml-auto flex items-center gap-2 lg:ml-0">
+        <ThemeToggle />
         <span className="hidden items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-[12px] font-semibold sm:flex">
           <Zap className="h-3.5 w-3.5 text-spectral-1" strokeWidth={2.2} />
           1,280
