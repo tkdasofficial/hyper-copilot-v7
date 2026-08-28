@@ -490,11 +490,13 @@ export function PromptComposer() {
                 </PopoverContent>
               </Popover>
 
-              <button type="button" onClick={() => setValue(suggestions[Math.floor(Math.random() * suggestions.length)]!)}>
-                <Chip icon={Shuffle} caret={false}>
-                  Surprise me
-                </Chip>
-              </button>
+<Chip
+                icon={Shuffle}
+                caret={false}
+                onClick={() => setValue(suggestions[Math.floor(Math.random() * suggestions.length)]!)}
+              >
+                Surprise me
+              </Chip>
             </div>
 
             <button
