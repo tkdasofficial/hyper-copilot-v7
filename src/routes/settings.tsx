@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Monitor, Moon, Sun } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Monitor, Moon, Sun } from "lucide-react";
 import { MobileNav, Sidebar } from "@/components/hyper/Sidebar";
 import { TopBar } from "@/components/hyper/TopBar";
 import { useTheme, type Theme } from "@/components/hyper/ThemeProvider";
@@ -41,15 +41,8 @@ function SettingsPage() {
       <div className="lg:pl-[248px]">
         <TopBar />
         <main className="mx-auto max-w-3xl px-4 pb-28 pt-10 lg:px-8 lg:pb-20">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <ArrowLeft className="h-4 w-4" strokeWidth={2} />
-            Back to studio
-          </Link>
 
-          <h1 className="mt-4 text-3xl font-extrabold tracking-[-0.03em] sm:text-4xl">Settings</h1>
+          <h1 className="text-3xl font-extrabold tracking-[-0.03em] sm:text-4xl">Settings</h1>
           <p className="mt-2 text-[14px] text-muted-foreground">
             Personalise how Hyper Copilot looks and behaves for your account.
           </p>

@@ -23,7 +23,7 @@ export function ProfileMenu() {
         <button
           type="button"
           aria-label="Account menu"
-          className="bg-spectral grid h-9 w-9 place-items-center rounded-full text-[12px] font-extrabold text-primary-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="grid h-9 w-9 bg-primary place-items-center rounded-full text-[12px] font-extrabold text-primary-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           TK
         </button>
