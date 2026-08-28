@@ -164,16 +164,24 @@
     background: color-mix(in oklab, var(--spectral-3) 30%, transparent);
   }
 
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+  html {
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
-  ::-webkit-scrollbar-thumb {
-    background: var(--color-surface-2);
-    border-radius: 999px;
-    border: 3px solid var(--color-background);
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Hide scrollbars app-wide (scrolling still works) */
+  *::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
   }
 }
+
 
 @utility text-spectral {
   background: var(--gradient-spectral);
