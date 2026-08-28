@@ -191,7 +191,7 @@ export function PromptComposer() {
     if (!seedLocked) setSeed(Math.floor(Math.random() * 999999));
 
     const prompt = value.trim();
-    const n = count[0];
+    const n = count[0] ?? 4;
     const baseId = `${Date.now()}`;
     const placeholders: GenResult[] = Array.from({ length: n }, (_, i) => ({
       id: `${baseId}-${i}`,
