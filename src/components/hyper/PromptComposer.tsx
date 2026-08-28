@@ -21,6 +21,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
+import { streamImage } from "@/lib/streamImage";
+import { ResultsGrid, type GenResult } from "./ResultsGrid";
 
 const modalities = [
   { label: "Image", icon: ImageIcon },
