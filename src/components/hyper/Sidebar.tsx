@@ -113,7 +113,12 @@ export function Sidebar() {
 }
 
 export function MobileNav() {
-  const items = [primary[0], generate[0], generate[1], workspace[0]];
+  const items: Item[] = [
+    { label: "Home", icon: Home, active: true },
+    { label: "Image", icon: ImageIcon },
+    { label: "Video", icon: Video },
+    { label: "Boards", icon: Layers },
+  ];
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around border-t border-border bg-background/90 px-2 pb-[env(safe-area-inset-bottom)] pt-1.5 backdrop-blur-xl lg:hidden">
       {items.map((item) => {
