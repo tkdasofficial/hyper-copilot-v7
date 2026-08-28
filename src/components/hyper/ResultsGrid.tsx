@@ -12,19 +12,20 @@ export type GenResult = {
 };
 
 function ResultCard({ result }: { result: GenResult }) {
+  const hasImage = result.dataUrl.length > 0;
   return (
-    <figure className="group relative overflow-hidden rounded-2xl border border-border bg-surface">
-      <img
-        src={result.dataUrl}
-        alt={result.prompt}
-        className={cn(
-          "w-full transition-[filter] duration-500",
-          result.isFinal ? "blur-0" : "blur-2xl",
-        )}
-        style={{ aspectRatio: "1 / 1" }}
-      />
-      {!result.isFinal && (
-        <div className="pointer-events-none absolute inset-0 grid place-items-center">
+    <figure className="group relative aspect-square overflow-hidden rounded-2xl border border-border bg-surface">
+      {hasImage ? (
+        <img
+          src={result.dataUrl}
+          alt={result.prompt}
+          className={cn(
+            "h-full w-full object-cover transition-[filter] duration-500",
+            result.isFinal ? "blur-0" : "blur-2xl",
+          )}
+        />
+      ) : (
+        <div className="grid h-full w-full place-items-center">
           <Loader2 className="h-7 w-7 animate-spin text-foreground/70" strokeWidth={2} />
         </div>
       )}
