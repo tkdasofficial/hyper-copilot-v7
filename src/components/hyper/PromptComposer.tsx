@@ -111,10 +111,10 @@ function OptionRow({
   accent,
 }: {
   title: string;
-  note?: string;
-  selected?: boolean;
+  note?: string | undefined;
+  selected?: boolean | undefined;
   onClick: () => void;
-  accent?: boolean;
+  accent?: boolean | undefined;
 }) {
   return (
     <button
@@ -146,9 +146,9 @@ function OptionRow({
 export function PromptComposer() {
   const [active, setActive] = useState("Image");
   const [value, setValue] = useState("");
-  const [model, setModel] = useState(models[0]);
-  const [ratio, setRatio] = useState(ratios[0]);
-  const [style, setStyle] = useState(styles[0]);
+  const [model, setModel] = useState(models[0]!);
+  const [ratio, setRatio] = useState(ratios[0]!);
+  const [style, setStyle] = useState(styles[0]!);
   const [styleStrength, setStyleStrength] = useState([65]);
   const [modes, setModes] = useState<string[]>([]);
   const [refs, setRefs] = useState<{ id: string; name: string; url: string }[]>([]);
@@ -427,7 +427,7 @@ export function PromptComposer() {
                 </PopoverContent>
               </Popover>
 
-              <button type="button" onClick={() => setValue(suggestions[Math.floor(Math.random() * suggestions.length)])}>
+              <button type="button" onClick={() => setValue(suggestions[Math.floor(Math.random() * suggestions.length)]!)}>
                 <Chip icon={Shuffle} caret={false}>
                   Surprise me
                 </Chip>
