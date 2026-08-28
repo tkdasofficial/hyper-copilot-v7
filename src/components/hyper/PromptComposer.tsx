@@ -21,6 +21,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
+import { streamImage } from "@/lib/streamImage";
+import { ResultsGrid, type GenResult } from "./ResultsGrid";
 
 const modalities = [
   { label: "Image", icon: ImageIcon },
@@ -31,9 +33,17 @@ const modalities = [
 ];
 
 const models = [
-  { id: "hyper-image-4", name: "Hyper Image 4", note: "Balanced quality & speed" },
-  { id: "hyper-image-4-turbo", name: "Hyper Image 4 Turbo", note: "Fastest drafts" },
-  { id: "hyper-vision-pro", name: "Hyper Vision Pro", note: "Highest fidelity" },
+  {
+    id: "google/gemini-3.1-flash-image",
+    name: "Hyper Image 4",
+    note: "Balanced quality & speed",
+  },
+  {
+    id: "google/gemini-3.1-flash-lite-image",
+    name: "Hyper Image 4 Turbo",
+    note: "Fastest drafts",
+  },
+  { id: "google/gemini-3-pro-image", name: "Hyper Vision Pro", note: "Highest fidelity" },
 ];
 
 const ratios = [
@@ -80,15 +90,18 @@ function Chip({
   children,
   active,
   caret = true,
+  onClick,
 }: {
   icon: typeof Ratio;
   children: React.ReactNode;
   active?: boolean;
   caret?: boolean;
+  onClick?: () => void;
 }) {
   return (
     <button
       type="button"
+      onClick={onClick}
       className={cn(
         "flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[12px] font-semibold transition-colors",
         active
@@ -155,6 +168,8 @@ export function PromptComposer() {
   const [count, setCount] = useState([4]);
   const [seedLocked, setSeedLocked] = useState(false);
   const [seed, setSeed] = useState(() => Math.floor(Math.random() * 999999));
+  const [results, setResults] = useState<GenResult[]>([]);
+  const [generating, setGenerating] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const toggleMode = (id: string) =>
@@ -175,17 +190,73 @@ export function PromptComposer() {
     if (next.length && modes.length === 0) setModes(["reference"]);
   };
 
-  const generate = () => {
+  const generate = async () => {
     if (!value.trim()) {
       toast.error("Describe what you want to create first.");
       return;
     }
+    if (active !== "Image") {
+      toast.info(`${active} generation is coming soon. Image generation is live now.`);
+      return;
+    }
     if (!seedLocked) setSeed(Math.floor(Math.random() * 999999));
-    toast.success(`Queued ${count[0]} ${active.toLowerCase()} generations`, {
-      description: `${model.name} · ${ratio.label} · ${style.name}${
-        modes.length ? ` · ${modes.length} advanced option(s)` : ""
-      }`,
+
+    const prompt = value.trim();
+    const n = count[0] ?? 4;
+    const baseId = `${Date.now()}`;
+    const placeholders: GenResult[] = Array.from({ length: n }, (_, i) => ({
+      id: `${baseId}-${i}`,
+      prompt,
+      dataUrl: "",
+      isFinal: false,
+      model: model.name,
+      ratioLabel: ratio.label,
+      styleName: style.name,
+    }));
+    setResults((r) => [...placeholders, ...r]);
+    setGenerating(true);
+
+    toast.success(`Generating ${n} image${n === 1 ? "" : "s"}…`, {
+      description: `${model.name} · ${ratio.label} · ${style.name}`,
     });
+
+    // Generate each variation in parallel; each streams partial frames into its card.
+    const tasks = placeholders.map((ph, i) =>
+      (async () => {
+        try {
+          let gotFrame = false;
+          await streamImage("/api/generate-image", prompt, model.id, (dataUrl, isFinal) => {
+            gotFrame = true;
+            setResults((list) =>
+              list.map((r) => (r.id === ph.id ? { ...r, dataUrl, isFinal } : r)),
+            );
+          });
+          // Zero-event stream: replay once non-streaming to recover the image.
+          if (!gotFrame) {
+            await streamImage("/api/generate-image", prompt, model.id, (dataUrl, isFinal) => {
+              setResults((list) =>
+                list.map((r) => (r.id === ph.id ? { ...r, dataUrl, isFinal } : r)),
+              );
+            });
+          }
+        } catch (err) {
+          setResults((list) =>
+            list.map((r) =>
+              r.id === ph.id
+                ? {
+                    ...r,
+                    prompt: `Failed to generate (${err instanceof Error ? err.message : "error"})`,
+                  }
+                : r,
+            ),
+          );
+        } finally {
+          setGenerating((g) => (i === n - 1 ? false : g));
+        }
+      })(),
+    );
+    await Promise.all(tasks);
+    setGenerating(false);
   };
 
   return (
@@ -427,11 +498,13 @@ export function PromptComposer() {
                 </PopoverContent>
               </Popover>
 
-              <button type="button" onClick={() => setValue(suggestions[Math.floor(Math.random() * suggestions.length)]!)}>
-                <Chip icon={Shuffle} caret={false}>
-                  Surprise me
-                </Chip>
-              </button>
+<Chip
+                icon={Shuffle}
+                caret={false}
+                onClick={() => setValue(suggestions[Math.floor(Math.random() * suggestions.length)]!)}
+              >
+                Surprise me
+              </Chip>
             </div>
 
             <button
@@ -457,7 +530,9 @@ export function PromptComposer() {
             {s}
           </button>
         ))}
-      </div>
+</div>
+
+      <ResultsGrid results={results} generating={generating} />
     </div>
   );
 }
