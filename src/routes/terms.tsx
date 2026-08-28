@@ -52,12 +52,8 @@ function TermsPage() {
       <Sidebar />
       <div className="lg:pl-[248px]">
         <TopBar />
-        <main className="mx-auto max-w-2xl px-4 pb-28 pt-10 lg:px-8 lg:pb-20">
-          <h1 className="text-3xl font-extrabold tracking-[-0.03em] sm:text-4xl">
-            Terms of Service
-          </h1>
-          <p className="mt-2 text-[12.5px] text-muted-foreground">Last updated August 2026</p>
-          <div className="mt-8 space-y-6">
+        <main className="mx-auto max-w-2xl px-4 pb-28 pt-6 lg:px-8 lg:pb-20">
+          <div className="space-y-6">
             {sections.map((s) => (
               <section key={s.h}>
                 <h2 className="text-[15px] font-bold">{s.h}</h2>
