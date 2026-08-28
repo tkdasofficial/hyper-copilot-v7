@@ -5,9 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Hyper Copilot design system — high-tech generative AI studio.
- * Dark, near-black canvas (matches the app icon), spectral accent gradient,
- * soft glass surfaces. All colors in oklch. Never hardcode colors in components.
+ * Hyper Copilot design system — strict palette: black, white, red, blue.
+ * Light + dark themes (system aware). All colors in oklch.
+ * Never hardcode colors in components; use these tokens.
  */
 
 @theme inline {
@@ -50,52 +50,94 @@
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
+/* ---------- Light theme (default) ---------- */
 :root {
   --radius: 1rem;
 
-  --background: oklch(0.16 0.006 264);
-  --foreground: oklch(0.98 0.002 264);
-  --surface: oklch(0.21 0.007 264);
-  --surface-2: oklch(0.26 0.008 264);
-  --card: oklch(0.21 0.007 264);
-  --card-foreground: oklch(0.98 0.002 264);
-  --popover: oklch(0.23 0.008 264);
-  --popover-foreground: oklch(0.98 0.002 264);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.14 0 0);
+  --surface: oklch(0.975 0 0);
+  --surface-2: oklch(0.94 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.14 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.14 0 0);
 
-  --primary: oklch(0.98 0.002 264);
-  --primary-foreground: oklch(0.16 0.006 264);
-  --secondary: oklch(0.26 0.008 264);
-  --secondary-foreground: oklch(0.98 0.002 264);
-  --muted: oklch(0.24 0.007 264);
-  --muted-foreground: oklch(0.72 0.012 264);
-  --accent: oklch(0.3 0.01 264);
-  --accent-foreground: oklch(0.98 0.002 264);
+  --primary: oklch(0.14 0 0);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.14 0 0);
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.45 0 0);
+  --accent: oklch(0.94 0 0);
+  --accent-foreground: oklch(0.14 0 0);
 
-  --spectral-1: oklch(0.72 0.19 32);
-  --spectral-2: oklch(0.66 0.24 350);
-  --spectral-3: oklch(0.6 0.24 292);
-  --spectral-4: oklch(0.72 0.17 226);
+  /* red -> blue only */
+  --spectral-1: oklch(0.55 0.24 27);
+  --spectral-2: oklch(0.55 0.24 27);
+  --spectral-3: oklch(0.5 0.24 264);
+  --spectral-4: oklch(0.5 0.24 264);
 
-  --destructive: oklch(0.62 0.22 25);
-  --destructive-foreground: oklch(0.98 0.002 264);
-  --border: oklch(1 0 0 / 9%);
-  --border-strong: oklch(1 0 0 / 18%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.66 0.24 350);
+  --destructive: oklch(0.55 0.24 27);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.14 0 0 / 12%);
+  --border-strong: oklch(0.14 0 0 / 24%);
+  --input: oklch(0.14 0 0 / 16%);
+  --ring: oklch(0.5 0.24 264);
 
   --gradient-spectral: linear-gradient(
     100deg,
     var(--spectral-1) 0%,
-    var(--spectral-2) 34%,
-    var(--spectral-3) 66%,
-    var(--spectral-4) 100%
+    var(--spectral-3) 100%
   );
   --gradient-aura: radial-gradient(
     120% 100% at 50% 0%,
-    color-mix(in oklab, var(--spectral-3) 26%, transparent) 0%,
-    color-mix(in oklab, var(--spectral-2) 12%, transparent) 34%,
+    color-mix(in oklab, var(--spectral-3) 20%, transparent) 0%,
+    color-mix(in oklab, var(--spectral-1) 12%, transparent) 34%,
     transparent 72%
   );
+  --gradient-glass: linear-gradient(
+    180deg,
+    color-mix(in oklab, oklch(1 0 0) 70%, transparent),
+    color-mix(in oklab, oklch(1 0 0) 30%, transparent)
+  );
+  --shadow-float: 0 24px 60px -24px oklch(0 0 0 / 0.22);
+  --shadow-glow: 0 0 0 1px var(--border-strong), 0 30px 80px -32px
+    color-mix(in oklab, var(--spectral-3) 30%, transparent);
+}
+
+/* ---------- Dark theme ---------- */
+.dark {
+  --background: oklch(0.13 0 0);
+  --foreground: oklch(0.99 0 0);
+  --surface: oklch(0.19 0 0);
+  --surface-2: oklch(0.25 0 0);
+  --card: oklch(0.19 0 0);
+  --card-foreground: oklch(0.99 0 0);
+  --popover: oklch(0.19 0 0);
+  --popover-foreground: oklch(0.99 0 0);
+
+  --primary: oklch(0.99 0 0);
+  --primary-foreground: oklch(0.13 0 0);
+  --secondary: oklch(0.25 0 0);
+  --secondary-foreground: oklch(0.99 0 0);
+  --muted: oklch(0.23 0 0);
+  --muted-foreground: oklch(0.72 0 0);
+  --accent: oklch(0.28 0 0);
+  --accent-foreground: oklch(0.99 0 0);
+
+  --spectral-1: oklch(0.63 0.24 27);
+  --spectral-2: oklch(0.63 0.24 27);
+  --spectral-3: oklch(0.62 0.22 264);
+  --spectral-4: oklch(0.62 0.22 264);
+
+  --destructive: oklch(0.63 0.24 27);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(1 0 0 / 12%);
+  --border-strong: oklch(1 0 0 / 22%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.62 0.22 264);
+
   --gradient-glass: linear-gradient(
     180deg,
     color-mix(in oklab, oklch(1 0 0) 8%, transparent),
@@ -119,7 +161,7 @@
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--spectral-2) 40%, transparent);
+    background: color-mix(in oklab, var(--spectral-3) 30%, transparent);
   }
 
   ::-webkit-scrollbar {
