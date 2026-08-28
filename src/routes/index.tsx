@@ -29,16 +29,17 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-background">
       <Sidebar />
       <div className="lg:pl-[248px]">
         <TopBar />
 
-        <main className="relative mx-auto max-w-6xl px-4 pb-28 pt-10 sm:pt-14 lg:px-8 lg:pb-20">
+        <main className="relative mx-auto max-w-6xl overflow-x-hidden px-4 pb-28 pt-10 sm:pt-14 lg:px-8 lg:pb-20">
           <div
             aria-hidden
-            className="bg-aura animate-drift pointer-events-none absolute -top-24 left-1/2 h-[420px] w-[min(1100px,120%)] -translate-x-1/2 blur-[2px]"
+            className="bg-aura animate-drift pointer-events-none absolute -top-24 left-1/2 h-[420px] w-full max-w-[1100px] -translate-x-1/2 blur-[2px]"
           />
+
 
           <section className="relative text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1.5 text-[11.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground backdrop-blur">
