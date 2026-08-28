@@ -20,7 +20,6 @@ export function TopBar() {
       </div>
 
       <div className="ml-auto flex items-center gap-2 lg:ml-0">
-        <ThemeToggle />
         <span className="hidden items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-[12px] font-semibold sm:flex">
           <Zap className="h-3.5 w-3.5 text-spectral-1" strokeWidth={2.2} />
           1,280
@@ -33,14 +32,9 @@ export function TopBar() {
         >
           <Bell className="h-4 w-4" strokeWidth={1.8} />
         </button>
-        <button
-          type="button"
-          aria-label="Account"
-          className="bg-spectral grid h-9 w-9 place-items-center rounded-full text-[12px] font-extrabold text-primary-foreground"
-        >
-          TK
-        </button>
+        <ProfileMenu />
       </div>
+
     </header>
   );
 }
