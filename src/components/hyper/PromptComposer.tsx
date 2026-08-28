@@ -511,7 +511,7 @@ export function PromptComposer() {
               type="button"
               aria-label="Generate"
               onClick={generate}
-              className="bg-spectral grid h-11 w-11 shrink-0 place-items-center rounded-full text-primary-foreground transition-transform hover:scale-[1.04] active:scale-95"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-[1.04] active:scale-95"
             >
               <ArrowUp className="h-5 w-5" strokeWidth={2.6} />
             </button>
