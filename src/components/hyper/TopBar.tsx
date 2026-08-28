@@ -1,5 +1,6 @@
 import { Bell, Search, Zap } from "lucide-react";
 import { Logo } from "./Logo";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function TopBar() {
   return (
