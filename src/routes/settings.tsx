@@ -40,14 +40,8 @@ function SettingsPage() {
       <Sidebar />
       <div className="lg:pl-[248px]">
         <TopBar />
-        <main className="mx-auto max-w-3xl px-4 pb-28 pt-10 lg:px-8 lg:pb-20">
-
-          <h1 className="text-3xl font-extrabold tracking-[-0.03em] sm:text-4xl">Settings</h1>
-          <p className="mt-2 text-[14px] text-muted-foreground">
-            Personalise how Hyper Copilot looks and behaves for your account.
-          </p>
-
-          <section aria-labelledby="appearance" className="mt-9 rounded-3xl border border-border bg-surface/60 p-5">
+        <main className="mx-auto max-w-3xl px-4 pb-28 pt-6 lg:px-8 lg:pb-20">
+          <section aria-labelledby="appearance" className="rounded-3xl border border-border bg-surface/60 p-5">
             <h2 id="appearance" className="text-[15px] font-bold">
               Appearance
             </h2>

@@ -17,20 +17,20 @@ export function TopBar() {
 
   if (title) {
     return (
-      <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-background/70 px-4 py-3 backdrop-blur-xl lg:px-8">
+      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-background/70 px-4 py-3 backdrop-blur-xl lg:px-8">
         <button
           type="button"
           onClick={() => {
             if (typeof window !== "undefined" && window.history.length > 1) router.history.back();
             else router.navigate({ to: "/" });
           }}
-          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-[13px] font-semibold text-foreground transition-colors hover:bg-muted"
+          className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-3 py-1.5 text-[13px] font-semibold text-background transition-opacity hover:opacity-90"
         >
           <ArrowLeft className="h-4 w-4" strokeWidth={2} />
           Back
         </button>
 
-        <h1 className="ml-auto truncate text-[15px] font-bold tracking-[-0.02em]">{title}</h1>
+        <h1 className="truncate text-right text-[15px] font-bold tracking-[-0.02em]">{title}</h1>
       </header>
     );
   }

@@ -53,13 +53,8 @@ function PricingPage() {
       <Sidebar />
       <div className="lg:pl-[248px]">
         <TopBar />
-        <main className="mx-auto max-w-5xl px-4 pb-28 pt-10 lg:px-8 lg:pb-20">
-          <h1 className="text-3xl font-extrabold tracking-[-0.03em] sm:text-4xl">Pricing</h1>
-          <p className="mt-2 text-[14px] text-muted-foreground">
-            Simple plans that scale from a first prompt to a full production pipeline.
-          </p>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
+        <main className="mx-auto max-w-5xl px-4 pb-28 pt-6 lg:px-8 lg:pb-20">
+          <div className="grid gap-4 md:grid-cols-3">
             {plans.map((p) => (
               <div
                 key={p.name}
