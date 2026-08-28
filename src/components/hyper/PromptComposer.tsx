@@ -517,7 +517,9 @@ export function PromptComposer() {
             {s}
           </button>
         ))}
-      </div>
+</div>
+
+      <ResultsGrid results={results} generating={generating} />
     </div>
   );
 }
