@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "b9d7df5d-ef0f-4d7c-85d3-be3babd61838",
-  "project_id": "4be165a9-8ec1-4bce-a43f-d45974d17f35",
-  "url": "/__l5e/assets-v1/b9d7df5d-ef0f-4d7c-85d3-be3babd61838/hyper-logo-light.svg",
-  "r2_key": "a/v1/4be165a9-8ec1-4bce-a43f-d45974d17f35/b9d7df5d-ef0f-4d7c-85d3-be3babd61838/hyper-logo-light.svg",
-  "original_filename": "hyper-logo-light.svg",
-  "size": 23209,
   "content_type": "image/svg+xml",
-  "created_at": "2026-08-28T15:37:11Z"
+  "created_at": "2026-08-28T15:37:11Z",
+  "original_filename": "hyper-logo-light.svg",
+  "project_id": "b694148a-3c60-47c2-991a-816a9cbe7133",
+  "r2_key": "a/v1/b694148a-3c60-47c2-991a-816a9cbe7133/b9d7df5d-ef0f-4d7c-85d3-be3babd61838/hyper-logo-light.svg",
+  "size": 23209,
+  "url": "/__l5e/assets-v1/b9d7df5d-ef0f-4d7c-85d3-be3babd61838/hyper-logo-light.svg",
+  "version": 1
 }
