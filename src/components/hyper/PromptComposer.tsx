@@ -33,9 +33,17 @@ const modalities = [
 ];
 
 const models = [
-  { id: "hyper-image-4", name: "Hyper Image 4", note: "Balanced quality & speed" },
-  { id: "hyper-image-4-turbo", name: "Hyper Image 4 Turbo", note: "Fastest drafts" },
-  { id: "hyper-vision-pro", name: "Hyper Vision Pro", note: "Highest fidelity" },
+  {
+    id: "google/gemini-3.1-flash-image",
+    name: "Hyper Image 4",
+    note: "Balanced quality & speed",
+  },
+  {
+    id: "google/gemini-3.1-flash-lite-image",
+    name: "Hyper Image 4 Turbo",
+    note: "Fastest drafts",
+  },
+  { id: "google/gemini-3-pro-image", name: "Hyper Vision Pro", note: "Highest fidelity" },
 ];
 
 const ratios = [
