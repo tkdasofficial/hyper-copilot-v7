@@ -1,0 +1,81 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowLeft } from "lucide-react";
+import { MobileNav, Sidebar } from "@/components/hyper/Sidebar";
+import { TopBar } from "@/components/hyper/TopBar";
+
+export const Route = createFileRoute("/terms")({
+  head: () => ({
+    meta: [
+      { title: "Terms of Service — Hyper Copilot" },
+      {
+        name: "description",
+        content:
+          "The terms that govern your use of Hyper Copilot, including acceptable use, output ownership, credits and account termination.",
+      },
+      { property: "og:title", content: "Terms of Service — Hyper Copilot" },
+      {
+        property: "og:description",
+        content: "Acceptable use, output ownership and account rules for Hyper Copilot.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: TermsPage,
+});
+
+const sections = [
+  {
+    h: "1. Using Hyper Copilot",
+    p: "You may use Hyper Copilot to generate images, video, vectors and audio for personal and commercial projects, provided your prompts and references do not infringe the rights of others.",
+  },
+  {
+    h: "2. Your content and output",
+    p: "You keep the rights to the prompts and references you upload. Subject to your plan, you also own the output you generate and may use it commercially.",
+  },
+  {
+    h: "3. Acceptable use",
+    p: "Do not generate content that is unlawful, hateful, sexually explicit involving minors, or intended to deceive people about real events or identities.",
+  },
+  {
+    h: "4. Credits and billing",
+    p: "Credits are consumed per generation and reset at the start of each billing period. Paid plans renew automatically until cancelled.",
+  },
+  {
+    h: "5. Changes",
+    p: "We may update these terms as the product evolves. Continued use after an update means you accept the revised terms.",
+  },
+];
+
+function TermsPage() {
+  return (
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-background">
+      <Sidebar />
+      <div className="lg:pl-[248px]">
+        <TopBar />
+        <main className="mx-auto max-w-2xl px-4 pb-28 pt-10 lg:px-8 lg:pb-20">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4" strokeWidth={2} />
+            Back to studio
+          </Link>
+          <h1 className="mt-4 text-3xl font-extrabold tracking-[-0.03em] sm:text-4xl">
+            Terms of Service
+          </h1>
+          <p className="mt-2 text-[12.5px] text-muted-foreground">Last updated August 2026</p>
+          <div className="mt-8 space-y-6">
+            {sections.map((s) => (
+              <section key={s.h}>
+                <h2 className="text-[15px] font-bold">{s.h}</h2>
+                <p className="mt-1.5 text-[13.5px] leading-relaxed text-muted-foreground">{s.p}</p>
+              </section>
+            ))}
+          </div>
+        </main>
+      </div>
+      <MobileNav />
+    </div>
+  );
+}
