@@ -82,15 +82,18 @@ function Chip({
   children,
   active,
   caret = true,
+  onClick,
 }: {
   icon: typeof Ratio;
   children: React.ReactNode;
   active?: boolean;
   caret?: boolean;
+  onClick?: () => void;
 }) {
   return (
     <button
       type="button"
+      onClick={onClick}
       className={cn(
         "flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[12px] font-semibold transition-colors",
         active
