@@ -157,6 +157,8 @@ export function PromptComposer() {
   const [count, setCount] = useState([4]);
   const [seedLocked, setSeedLocked] = useState(false);
   const [seed, setSeed] = useState(() => Math.floor(Math.random() * 999999));
+  const [results, setResults] = useState<GenResult[]>([]);
+  const [generating, setGenerating] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const toggleMode = (id: string) =>
@@ -177,17 +179,73 @@ export function PromptComposer() {
     if (next.length && modes.length === 0) setModes(["reference"]);
   };
 
-  const generate = () => {
+  const generate = async () => {
     if (!value.trim()) {
       toast.error("Describe what you want to create first.");
       return;
     }
+    if (active !== "Image") {
+      toast.info(`${active} generation is coming soon. Image generation is live now.`);
+      return;
+    }
     if (!seedLocked) setSeed(Math.floor(Math.random() * 999999));
-    toast.success(`Queued ${count[0]} ${active.toLowerCase()} generations`, {
-      description: `${model.name} · ${ratio.label} · ${style.name}${
-        modes.length ? ` · ${modes.length} advanced option(s)` : ""
-      }`,
+
+    const prompt = value.trim();
+    const n = count[0];
+    const baseId = `${Date.now()}`;
+    const placeholders: GenResult[] = Array.from({ length: n }, (_, i) => ({
+      id: `${baseId}-${i}`,
+      prompt,
+      dataUrl: "",
+      isFinal: false,
+      model: model.name,
+      ratioLabel: ratio.label,
+      styleName: style.name,
+    }));
+    setResults((r) => [...placeholders, ...r]);
+    setGenerating(true);
+
+    toast.success(`Generating ${n} image${n === 1 ? "" : "s"}…`, {
+      description: `${model.name} · ${ratio.label} · ${style.name}`,
     });
+
+    // Generate each variation in parallel; each streams partial frames into its card.
+    const tasks = placeholders.map((ph, i) =>
+      (async () => {
+        try {
+          let gotFrame = false;
+          await streamImage("/api/generate-image", prompt, model.id, (dataUrl, isFinal) => {
+            gotFrame = true;
+            setResults((list) =>
+              list.map((r) => (r.id === ph.id ? { ...r, dataUrl, isFinal } : r)),
+            );
+          });
+          // Zero-event stream: replay once non-streaming to recover the image.
+          if (!gotFrame) {
+            await streamImage("/api/generate-image", prompt, model.id, (dataUrl, isFinal) => {
+              setResults((list) =>
+                list.map((r) => (r.id === ph.id ? { ...r, dataUrl, isFinal } : r)),
+              );
+            });
+          }
+        } catch (err) {
+          setResults((list) =>
+            list.map((r) =>
+              r.id === ph.id
+                ? {
+                    ...r,
+                    prompt: `Failed to generate (${err instanceof Error ? err.message : "error"})`,
+                  }
+                : r,
+            ),
+          );
+        } finally {
+          setGenerating((g) => (i === n - 1 ? false : g));
+        }
+      })(),
+    );
+    await Promise.all(tasks);
+    setGenerating(false);
   };
 
   return (
