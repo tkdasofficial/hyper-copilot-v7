@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Monitor, Moon, Sun } from "lucide-react";
-import { MobileNav, Sidebar } from "@/components/hyper/Sidebar";
+import { Sidebar } from "@/components/hyper/Sidebar";
 import { TopBar } from "@/components/hyper/TopBar";
 import { useTheme, type Theme } from "@/components/hyper/ThemeProvider";
 import { cn } from "@/lib/utils";
@@ -96,7 +96,6 @@ function SettingsPage() {
           </section>
         </main>
       </div>
-      <MobileNav />
     </div>
   );
 }
