@@ -12,22 +12,34 @@ import {
   AudioLines,
   Layers,
   Tag,
+  Download,
+  MoreHorizontal,
+  Share2,
+  CopyPlus,
+  Flag,
 } from "lucide-react";
 import { useRouterState, useRouter, Link } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { ProfileMenu } from "./ProfileMenu";
 import { cn } from "@/lib/utils";
 
 const pageTitles: Record<string, string> = {
+  "/image": "Image Studio",
+  "/video": "Video Studio",
+  "/audio": "Audio Studio",
+  "/boards": "Boards",
   "/settings": "Settings",
   "/pricing": "Pricing",
   "/terms": "Terms of Service",
   "/privacy": "Privacy Policy",
 };
 
+const studioPages = new Set(["/image", "/video", "/audio"]);
+
 const drawerGenerate = [
-  { label: "Image", icon: ImageIcon },
-  { label: "Video", icon: Video },
-  { label: "Audio", icon: AudioLines },
+  { label: "Image", icon: ImageIcon, to: "/image" },
+  { label: "Video", icon: Video, to: "/video" },
+  { label: "Audio", icon: AudioLines, to: "/audio" },
 ];
 
 function DrawerLink({
@@ -65,10 +77,76 @@ function DrawerLink({
   );
 }
 
+function StudioActions() {
+  const [open, setOpen] = useState(false);
+  const items = [
+    {
+      label: "Share",
+      icon: Share2,
+      action: () => {
+        if (typeof navigator !== "undefined" && navigator.clipboard) {
+          void navigator.clipboard.writeText(window.location.href);
+        }
+        toast.success("Link copied to clipboard");
+      },
+    },
+    { label: "Duplicate session", icon: CopyPlus, action: () => toast.info("Session duplicated.") },
+    { label: "Report an issue", icon: Flag, action: () => toast.info("Thanks — we'll take a look.") },
+  ];
+  return (
+    <div className="relative flex items-center gap-2">
+      <button
+        type="button"
+        aria-label="Download"
+        onClick={() => toast.info("Nothing to download yet — generate first.")}
+        className="grid h-9 w-9 place-items-center rounded-full bg-foreground text-background transition-opacity hover:opacity-90"
+      >
+        <Download className="h-4 w-4" strokeWidth={2} />
+      </button>
+      <button
+        type="button"
+        aria-label="More options"
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+        className="grid h-9 w-9 place-items-center rounded-full border border-border bg-surface text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <MoreHorizontal className="h-4 w-4" strokeWidth={2} />
+      </button>
+      {open ? (
+        <>
+          <button
+            type="button"
+            aria-label="Close menu"
+            className="fixed inset-0 z-40 cursor-default"
+            onClick={() => setOpen(false)}
+          />
+          <div className="absolute right-0 top-11 z-50 w-48 rounded-2xl border border-border bg-background p-1.5 shadow-2xl">
+            {items.map((i) => (
+              <button
+                key={i.label}
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  i.action();
+                }}
+                className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"
+              >
+                <i.icon className="h-4 w-4" strokeWidth={1.8} />
+                {i.label}
+              </button>
+            ))}
+          </div>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
 export function TopBar() {
   const router = useRouter();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const title = pageTitles[pathname.replace(/\/$/, "") || "/"];
+  const key = pathname.replace(/\/$/, "") || "/";
+  const title = pageTitles[key];
   const [menuOpen, setMenuOpen] = useState(false);
 
   const drawer = menuOpen ? (
@@ -98,12 +176,12 @@ export function TopBar() {
             Generate
           </p>
           {drawerGenerate.map((i) => (
-            <DrawerLink key={i.label} icon={i.icon} label={i.label} onNavigate={() => setMenuOpen(false)} disabled />
+            <DrawerLink key={i.label} icon={i.icon} label={i.label} to={i.to} onNavigate={() => setMenuOpen(false)} />
           ))}
           <p className="px-3 pb-1.5 pt-4 text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground/70">
             Workspace
           </p>
-          <DrawerLink icon={Layers} label="Boards" onNavigate={() => setMenuOpen(false)} disabled />
+          <DrawerLink icon={Layers} label="Boards" to="/boards" onNavigate={() => setMenuOpen(false)} />
           <p className="px-3 pb-1.5 pt-4 text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground/70">
             Company
           </p>
@@ -133,7 +211,10 @@ export function TopBar() {
             <h1 className="truncate text-[15px] font-bold tracking-[-0.02em]">{title}</h1>
           </div>
 
-          <ProfileMenu />
+          <div className="flex items-center gap-2">
+            {studioPages.has(key) ? <StudioActions /> : null}
+            <ProfileMenu />
+          </div>
         </header>
         {drawer}
       </>
