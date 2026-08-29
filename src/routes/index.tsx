@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MobileNav, Sidebar } from "@/components/hyper/Sidebar";
+import { Sidebar } from "@/components/hyper/Sidebar";
 import { TopBar } from "@/components/hyper/TopBar";
 import { PromptComposer } from "@/components/hyper/PromptComposer";
 import { ToolGrid } from "@/components/hyper/ToolGrid";
@@ -70,7 +70,6 @@ function Index() {
           </footer>
         </main>
       </div>
-      <MobileNav />
     </div>
   );
 }
