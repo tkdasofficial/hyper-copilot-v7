@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MobileNav, Sidebar } from "@/components/hyper/Sidebar";
+import { Sidebar } from "@/components/hyper/Sidebar";
 import { TopBar } from "@/components/hyper/TopBar";
 
 export const Route = createFileRoute("/privacy")({
@@ -63,7 +63,6 @@ function PrivacyPage() {
           </div>
         </main>
       </div>
-      <MobileNav />
     </div>
   );
 }

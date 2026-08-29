@@ -112,31 +112,3 @@ export function Sidebar() {
   );
 }
 
-export function MobileNav() {
-  const items: Item[] = [
-    { label: "Home", icon: Home, active: true },
-    { label: "Image", icon: ImageIcon },
-    { label: "Video", icon: Video },
-    { label: "Boards", icon: Layers },
-  ];
-  return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around border-t border-border bg-background/90 px-2 pb-[env(safe-area-inset-bottom)] pt-1.5 backdrop-blur-xl lg:hidden">
-      {items.map((item) => {
-        const Icon = item.icon;
-        return (
-          <button
-            key={item.label}
-            type="button"
-            className={cn(
-              "flex flex-1 flex-col items-center gap-1 rounded-lg py-1.5 text-[10px] font-semibold",
-              item.active ? "text-foreground" : "text-muted-foreground",
-            )}
-          >
-            <Icon className="h-5 w-5" strokeWidth={1.8} />
-            {item.label}
-          </button>
-        );
-      })}
-    </nav>
-  );
-}
