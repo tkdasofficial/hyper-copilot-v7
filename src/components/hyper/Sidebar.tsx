@@ -11,41 +11,49 @@ import {
   Compass,
   ChevronRight,
 } from "lucide-react";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { cn } from "@/lib/utils";
 
-type Item = { label: string; icon: typeof Home; active?: boolean; badge?: string };
+type Item = { label: string; icon: typeof Home; to?: string; badge?: string };
 
 const primary: Item[] = [
-  { label: "Home", icon: Home, active: true },
+  { label: "Home", icon: Home, to: "/" },
   { label: "Explore", icon: Compass },
 ];
 
 const generate: Item[] = [
-  { label: "Image", icon: ImageIcon },
-  { label: "Video", icon: Video, badge: "New" },
-  { label: "Audio", icon: AudioLines },
+  { label: "Image", icon: ImageIcon, to: "/image" },
+  { label: "Video", icon: Video, to: "/video", badge: "New" },
+  { label: "Audio", icon: AudioLines, to: "/audio" },
   { label: "Vector", icon: PenTool },
   { label: "3D Scene", icon: Boxes, badge: "Beta" },
 ];
 
 const workspace: Item[] = [
-  { label: "Boards", icon: Layers },
+  { label: "Boards", icon: Layers, to: "/boards" },
   { label: "Files", icon: FolderOpen },
 ];
 
 function NavItem({ item }: { item: Item }) {
   const Icon = item.icon;
-  return (
-    <button
-      type="button"
-      className={cn(
-        "group flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium transition-colors",
-        item.active
-          ? "bg-surface-2 text-foreground"
-          : "text-muted-foreground hover:bg-surface hover:text-foreground",
-      )}
-    >
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const active = item.to
+    ? item.to === "/"
+      ? pathname === "/"
+      : pathname.startsWith(item.to)
+    : false;
+
+  const cls = cn(
+    "group flex w-full items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium transition-colors",
+    active
+      ? "bg-surface-2 text-foreground"
+      : "text-muted-foreground hover:bg-surface hover:text-foreground",
+    !item.to && "cursor-default",
+  );
+
+  const inner = (
+    <>
       <Icon className="h-[18px] w-[18px] shrink-0" strokeWidth={1.7} />
       <span className="truncate">{item.label}</span>
       {item.badge ? (
@@ -53,7 +61,20 @@ function NavItem({ item }: { item: Item }) {
           {item.badge}
         </span>
       ) : null}
-    </button>
+    </>
+  );
+
+  if (!item.to) {
+    return (
+      <button type="button" className={cls}>
+        {inner}
+      </button>
+    );
+  }
+  return (
+    <Link to={item.to} className={cls} aria-current={active ? "page" : undefined}>
+      {inner}
+    </Link>
   );
 }
 
@@ -100,15 +121,14 @@ export function Sidebar() {
         <p className="mt-1.5 text-[11.5px] leading-relaxed text-muted-foreground">
           Unlimited fast renders, 4K upscaling and private models.
         </p>
-        <button
-          type="button"
+        <Link
+          to="/pricing"
           className="mt-3 flex w-full items-center justify-center gap-1 rounded-full bg-primary px-3 py-1.5 text-[12px] font-bold text-primary-foreground transition-opacity hover:opacity-90"
         >
           Upgrade
           <ChevronRight className="h-3.5 w-3.5" strokeWidth={2.5} />
-        </button>
+        </Link>
       </div>
     </aside>
   );
 }
-
