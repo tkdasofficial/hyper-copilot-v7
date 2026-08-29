@@ -69,61 +69,118 @@ export function TopBar() {
   const router = useRouter();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const title = pageTitles[pathname.replace(/\/$/, "") || "/"];
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const drawer = menuOpen ? (
+    <div className="fixed inset-0 z-50 lg:hidden">
+      <button
+        type="button"
+        aria-label="Close menu"
+        className="absolute inset-0 bg-background/60 backdrop-blur-sm"
+        onClick={() => setMenuOpen(false)}
+      />
+      <div className="absolute inset-y-0 left-0 flex w-[280px] flex-col border-r border-border bg-background px-3 py-4 shadow-2xl">
+        <div className="flex items-center justify-between px-2 pb-3">
+          <span className="text-[15px] font-extrabold tracking-[-0.02em]">Hyper Copilot</span>
+          <button
+            type="button"
+            aria-label="Close menu"
+            onClick={() => setMenuOpen(false)}
+            className="grid h-8 w-8 place-items-center rounded-full border border-border bg-surface text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <X className="h-4 w-4" strokeWidth={2} />
+          </button>
+        </div>
+
+        <nav className="flex-1 space-y-0.5 overflow-y-auto pt-2">
+          <DrawerLink icon={Home} label="Home" to="/" onNavigate={() => setMenuOpen(false)} />
+          <p className="px-3 pb-1.5 pt-4 text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground/70">
+            Generate
+          </p>
+          {drawerGenerate.map((i) => (
+            <DrawerLink key={i.label} icon={i.icon} label={i.label} onNavigate={() => setMenuOpen(false)} disabled />
+          ))}
+          <p className="px-3 pb-1.5 pt-4 text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground/70">
+            Workspace
+          </p>
+          <DrawerLink icon={Layers} label="Boards" onNavigate={() => setMenuOpen(false)} disabled />
+          <p className="px-3 pb-1.5 pt-4 text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground/70">
+            Company
+          </p>
+          <DrawerLink icon={Tag} label="Pricing" to="/pricing" onNavigate={() => setMenuOpen(false)} />
+        </nav>
+      </div>
+    </div>
+  ) : null;
 
   if (title) {
     return (
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-background/70 px-4 py-3 backdrop-blur-xl lg:px-8">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            aria-label="Back"
-            onClick={() => {
-              if (typeof window !== "undefined" && window.history.length > 1) router.history.back();
-              else router.navigate({ to: "/" });
-            }}
-            className="grid h-9 w-9 place-items-center rounded-full bg-foreground text-background transition-opacity hover:opacity-90"
-          >
-            <ArrowLeft className="h-4 w-4" strokeWidth={2} />
-          </button>
+      <>
+        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-background/70 px-4 py-3 backdrop-blur-xl lg:px-8">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              aria-label="Back"
+              onClick={() => {
+                if (typeof window !== "undefined" && window.history.length > 1) router.history.back();
+                else router.navigate({ to: "/" });
+              }}
+              className="grid h-9 w-9 place-items-center rounded-full bg-foreground text-background transition-opacity hover:opacity-90"
+            >
+              <ArrowLeft className="h-4 w-4" strokeWidth={2} />
+            </button>
 
-          <h1 className="truncate text-[15px] font-bold tracking-[-0.02em]">{title}</h1>
-        </div>
+            <h1 className="truncate text-[15px] font-bold tracking-[-0.02em]">{title}</h1>
+          </div>
 
-        <ProfileMenu />
-      </header>
+          <ProfileMenu />
+        </header>
+        {drawer}
+      </>
     );
   }
 
   return (
-    <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-background/70 px-4 py-3 backdrop-blur-xl lg:px-8">
-      <div className="lg:hidden">
-        <Logo />
-      </div>
+    <>
+      <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-background/70 px-4 py-3 backdrop-blur-xl lg:px-8">
+        <div className="flex items-center gap-2 lg:hidden">
+          <button
+            type="button"
+            aria-label="Open menu"
+            onClick={() => setMenuOpen(true)}
+            className="grid h-9 w-9 place-items-center rounded-full border border-border bg-surface text-foreground transition-colors hover:bg-surface-2"
+          >
+            <Menu className="h-4.5 w-4.5" strokeWidth={2} />
+          </button>
+          <span className="text-[15px] font-extrabold tracking-[-0.02em]">Hyper Copilot</span>
+        </div>
 
-      <div className="ml-auto hidden min-w-0 flex-1 items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-2 text-muted-foreground lg:flex lg:max-w-md">
-        <Search className="h-4 w-4 shrink-0" strokeWidth={1.8} />
-        <input
-          aria-label="Search prompts, models and boards"
-          placeholder="Search prompts, models and boards"
-          className="w-full bg-transparent text-[13px] text-foreground outline-none placeholder:text-muted-foreground"
-        />
-      </div>
+        <div className="ml-auto hidden min-w-0 flex-1 items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-2 text-muted-foreground lg:flex lg:max-w-md">
+          <Search className="h-4 w-4 shrink-0" strokeWidth={1.8} />
+          <input
+            aria-label="Search prompts, models and boards"
+            placeholder="Search prompts, models and boards"
+            className="w-full bg-transparent text-[13px] text-foreground outline-none placeholder:text-muted-foreground"
+          />
+        </div>
 
-      <div className="ml-auto flex items-center gap-2 lg:ml-0">
-        <span className="hidden items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-[12px] font-semibold sm:flex">
-          <Zap className="h-3.5 w-3.5 text-spectral-1" strokeWidth={2.2} />
-          1,280
-          <span className="text-muted-foreground">credits</span>
-        </span>
-        <button
-          type="button"
-          aria-label="Notifications"
-          className="grid h-9 w-9 place-items-center rounded-full border border-border bg-surface text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <Bell className="h-4 w-4" strokeWidth={1.8} />
-        </button>
-        <ProfileMenu />
-      </div>
-    </header>
+        <div className="ml-auto flex items-center gap-2 lg:ml-0">
+          <span className="hidden items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-[12px] font-semibold sm:flex">
+            <Zap className="h-3.5 w-3.5 text-spectral-1" strokeWidth={2.2} />
+            1,280
+            <span className="text-muted-foreground">credits</span>
+          </span>
+          <button
+            type="button"
+            aria-label="Notifications"
+            className="grid h-9 w-9 place-items-center rounded-full border border-border bg-surface text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <Bell className="h-4 w-4" strokeWidth={1.8} />
+          </button>
+          <ProfileMenu />
+        </div>
+      </header>
+      {drawer}
+    </>
   );
 }
