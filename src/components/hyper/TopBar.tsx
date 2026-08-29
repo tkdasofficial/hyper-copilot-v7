@@ -1,7 +1,21 @@
-import { Bell, Search, Zap, ArrowLeft } from "lucide-react";
-import { useRouterState, useRouter } from "@tanstack/react-router";
-import { Logo } from "./Logo";
+import { useState } from "react";
+import {
+  Bell,
+  Search,
+  Zap,
+  ArrowLeft,
+  Menu,
+  X,
+  Home,
+  ImageIcon,
+  Video,
+  AudioLines,
+  Layers,
+  Tag,
+} from "lucide-react";
+import { useRouterState, useRouter, Link } from "@tanstack/react-router";
 import { ProfileMenu } from "./ProfileMenu";
+import { cn } from "@/lib/utils";
 
 const pageTitles: Record<string, string> = {
   "/settings": "Settings",
@@ -9,6 +23,47 @@ const pageTitles: Record<string, string> = {
   "/terms": "Terms of Service",
   "/privacy": "Privacy Policy",
 };
+
+const drawerGenerate = [
+  { label: "Image", icon: ImageIcon },
+  { label: "Video", icon: Video },
+  { label: "Audio", icon: AudioLines },
+];
+
+function DrawerLink({
+  icon: Icon,
+  label,
+  to,
+  onNavigate,
+  disabled,
+}: {
+  icon: typeof Home;
+  label: string;
+  to?: string;
+  onNavigate: () => void;
+  disabled?: boolean;
+}) {
+  const cls = cn(
+    "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[14px] font-medium transition-colors",
+    disabled
+      ? "cursor-default text-muted-foreground/60"
+      : "text-muted-foreground hover:bg-surface hover:text-foreground",
+  );
+  if (!to || disabled) {
+    return (
+      <button type="button" className={cls}>
+        <Icon className="h-[18px] w-[18px]" strokeWidth={1.7} />
+        {label}
+      </button>
+    );
+  }
+  return (
+    <Link to={to} onClick={onNavigate} className={cls}>
+      <Icon className="h-[18px] w-[18px]" strokeWidth={1.7} />
+      {label}
+    </Link>
+  );
+}
 
 export function TopBar() {
   const router = useRouter();
